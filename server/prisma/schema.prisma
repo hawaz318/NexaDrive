@@ -27,15 +27,15 @@ enum InviteStatus {
 }
 
 model User {
-  id               String               @id @default(uuid())
-  email            String               @unique
-  username         String               @unique
-  passwordHash     String
-  role             Role                 @default(USER)
-  storageQuota     BigInt               @default(549755813888) // 512 GB in bytes (512 * 1024^3)
-  usedStorage      BigInt               @default(0)
-  createdAt        DateTime             @default(now())
-  updatedAt        DateTime             @updatedAt
+  id           String   @id @default(uuid())
+  email        String   @unique
+  username     String   @unique
+  passwordHash String
+  role         Role     @default(USER)
+  storageQuota BigInt   @default(549755813888) // 512 GB in bytes (512 * 1024^3)
+  usedStorage  BigInt   @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   folders          Folder[]             @relation("UserFolders")
   files            File[]               @relation("UserFiles")
@@ -61,43 +61,43 @@ model RefreshToken {
 }
 
 model Folder {
-  id         String        @id @default(uuid())
+  id         String     @id @default(uuid())
   name       String
   parentId   String?
-  parent     Folder?       @relation("SubFolders", fields: [parentId], references: [id], onDelete: Cascade)
-  subfolders Folder[]      @relation("SubFolders")
+  parent     Folder?    @relation("SubFolders", fields: [parentId], references: [id], onDelete: Cascade)
+  subfolders Folder[]   @relation("SubFolders")
   ownerId    String
-  owner      User          @relation("UserFolders", fields: [ownerId], references: [id], onDelete: Cascade)
-  visibility Visibility    @default(PRIVATE)
-  isTrashed  Boolean       @default(false)
+  owner      User       @relation("UserFolders", fields: [ownerId], references: [id], onDelete: Cascade)
+  visibility Visibility @default(PRIVATE)
+  isTrashed  Boolean    @default(false)
   trashedAt  DateTime?
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 
-  files      File[]
-  shares     FolderShare[]
+  files  File[]
+  shares FolderShare[]
 
   @@map("folders")
 }
 
 model File {
-  id          String        @id @default(uuid())
+  id          String     @id @default(uuid())
   name        String
   size        BigInt
   mimeType    String
   storagePath String
   folderId    String?
-  folder      Folder?       @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folder      Folder?    @relation(fields: [folderId], references: [id], onDelete: Cascade)
   ownerId     String
-  owner       User          @relation("UserFiles", fields: [ownerId], references: [id], onDelete: Cascade)
-  visibility  Visibility    @default(PRIVATE)
-  isTrashed   Boolean       @default(false)
+  owner       User       @relation("UserFiles", fields: [ownerId], references: [id], onDelete: Cascade)
+  visibility  Visibility @default(PRIVATE)
+  isTrashed   Boolean    @default(false)
   trashedAt   DateTime?
-  currentVer  Int           @default(1)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  currentVer  Int        @default(1)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
-  versions    FileVersion[]
+  versions FileVersion[]
 
   @@map("files")
 }
@@ -118,27 +118,27 @@ model FolderShare {
   id           String       @id @default(uuid())
   folderId     String
   folder       Folder       @relation(fields: [folderId], references: [id], onDelete: Cascade)
-  createdById   String
+  createdById  String
   createdBy    User         @relation("CreatedShares", fields: [createdById], references: [id])
   sharedWithId String?
   sharedWith   User?        @relation("ReceivedShares", fields: [sharedWithId], references: [id])
   groupId      String?
   group        Group?       @relation(fields: [groupId], references: [id])
   status       InviteStatus @default(PENDING)
-  permissions  String[]     // E.g. ["READ", "WRITE", "DELETE", "SHARE"]
+  permissions  String[] // E.g. ["READ", "WRITE", "DELETE", "SHARE"]
   createdAt    DateTime     @default(now())
 
   @@map("folder_shares")
 }
 
 model Group {
-  id          String        @id @default(uuid())
-  name        String        @unique
+  id          String   @id @default(uuid())
+  name        String   @unique
   description String?
-  createdAt   DateTime      @default(now())
+  createdAt   DateTime @default(now())
 
-  members     GroupMember[]
-  shares      FolderShare[]
+  members GroupMember[]
+  shares  FolderShare[]
 
   @@map("groups")
 }
@@ -162,8 +162,8 @@ model PaymentTransaction {
   user       User     @relation(fields: [userId], references: [id])
   amount     Float
   currency   String   @default("ETB")
-  status     String   // PENDING, SUCCESS, FAILED
-  quotaBytes BigInt   // Quota added in bytes
+  status     String // PENDING, SUCCESS, FAILED
+  quotaBytes BigInt // Quota added in bytes
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
@@ -174,8 +174,8 @@ model ActivityLog {
   id        String   @id @default(uuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id])
-  action    String   // e.g., FILE_UPLOAD, FOLDER_CREATE, SHARE_INVITE
-  details   String?  // JSON formatted details string
+  action    String // e.g., FILE_UPLOAD, FOLDER_CREATE, SHARE_INVITE
+  details   String? // JSON formatted details string
   createdAt DateTime @default(now())
 
   @@map("activity_logs")

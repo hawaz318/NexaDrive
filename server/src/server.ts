@@ -1,11 +1,15 @@
+import dotenv from "dotenv";
 import app from './app';
-import { config } from './config/env';
 
-const server = app.listen(config.port, () => {
-  console.log(`🚀 NexaDrive Backend Server running on http://localhost:${config.port}`);
-  console.log(`📡 Environment: ${config.nodeEnv}`);
+
+dotenv.config();
+
+const PORT = process.env.PORT || 5000;
+
+const server = app.listen(PORT, () => {
+  console.log(`NexaDrive API running on http://localhost:${PORT}`);
+  console.log(`Swagger docs: http://localhost:${PORT}/api-docs`);
 });
-
 process.on('unhandledRejection', (reason: Error) => {
   console.error('Unhandled Rejection at:', reason.stack || reason);
 });
