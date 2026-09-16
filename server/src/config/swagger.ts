@@ -18,6 +18,17 @@ const swaggerOptions: swaggerJsdoc.Options = {
       },
     ],
 
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description: "Enter your JWT access token",
+        },
+      },
+    },
+
     tags: [
       {
         name: "Health",
@@ -25,23 +36,71 @@ const swaggerOptions: swaggerJsdoc.Options = {
       },
       {
         name: "Authentication",
-        description: "Authentication endpoints",
+        description:
+          "User registration, login, OAuth (Google & GitHub), token refresh, and password management",
       },
       {
         name: "Users",
-        description: "User management endpoints",
+        description: "User profile and account management",
       },
       {
         name: "Folders",
-        description: "Folder management endpoints",
+        description: "Folder CRUD, nesting, and visibility management",
       },
       {
         name: "Files",
-        description: "File management endpoints",
+        description: "File upload, download, metadata, and visibility management",
+      },
+      {
+        name: "File Versions",
+        description: "File version history and rollback",
       },
       {
         name: "Sharing",
-        description: "File and folder sharing endpoints",
+        description: "Direct file and folder sharing with users and groups",
+      },
+      {
+        name: "Invitations",
+        description: "Email-based sharing invitations with acceptance workflow",
+      },
+      {
+        name: "Public Links",
+        description:
+          "Password-protected public links with expiry and download limits",
+      },
+      {
+        name: "Groups",
+        description: "Group creation, membership, and group-based permissions",
+      },
+      {
+        name: "Permissions",
+        description:
+          "Role-based resource permissions (Owner, Manager, Editor, Contributor, Viewer, Custom)",
+      },
+      {
+        name: "Trash",
+        description: "Soft-delete, restore, and permanent deletion of files and folders",
+      },
+      {
+        name: "Storage Plans",
+        description: "Available storage plans and pricing (Free, Premium, Business)",
+      },
+      {
+        name: "Subscriptions",
+        description: "User subscription lifecycle management",
+      },
+      {
+        name: "Payments",
+        description: "Payment processing via Chapa and Telebirr",
+      },
+      {
+        name: "Activities",
+        description: "User activity logs and audit trail",
+      },
+      {
+        name: "Notifications",
+        description:
+          "User notifications for shares, downloads, quota alerts, and invitations",
       },
     ],
   },
@@ -49,4 +108,4 @@ const swaggerOptions: swaggerJsdoc.Options = {
   apis: ["./src/routes/*.ts", "./src/controllers/*.ts"],
 };
 
-export const swaggerSpec = swaggerJsdoc(swaggerOptions);
+export const swaggerSpec = swaggerJsdoc(swaggerOptions);

@@ -1,0 +1,38 @@
+Walkthrough: Phase 3 (Authentication & Security) Completed
+We have fully implemented and verified Phase 3: Authentication & Security for the NexaDrive backend.
+
+Summary of Changes
+1. Security Utilities & Helpers (server/src/utils)
+src/utils/password.ts
+: hashPassword (bcrypt, 10 salt rounds) and comparePassword.
+src/utils/jwt.ts
+: generateAccessToken (15m), generateRefreshToken (7d), verifyAccessToken, verifyRefreshToken.
+src/types/express.d.ts
+: Extended Express Request interface with authenticated user payload (req.user).
+2. Validation & Middleware (server/src/validations & server/src/middlewares)
+src/validations/auth.validation.ts
+: Zod schemas for register, login, refreshToken, changePassword, forgotPassword, resetPassword.
+src/middlewares/auth.middleware.ts
+: authenticateUser (JWT Bearer token verification + active user validation) and requireRole RBAC authorization.
+3. Authentication Services & Controllers (server/src/)
+src/services/auth.service.ts
+:
+register: Validates email/username uniqueness, hashes password, initializes user with 512 GB default storage quota, issues JWT tokens, logs activity.
+login: Verifies user credentials, returns tokens, saves refresh token in RefreshToken table, logs activity.
+refreshToken: Refresh token rotation strategy (invalidates old refresh token, issues new token pair).
+logout: Revokes refresh token.
+changePassword: Password verification, hash update, token invalidation.
+forgotPassword & resetPassword: Token generation & secure password reset.
+src/controllers/auth.controller.ts
+: Controller endpoints using asyncHandler & sendResponse.
+src/routes/auth.routes.ts
+: Mounted under /api/v1/auth with Swagger annotations.
+Verification Results
+1. TypeScript Compilation
+Command: npx tsc --noEmit
+Result: Passed with 0 type errors.
+2. API Endpoint Testing
+User Registration (POST /api/v1/auth/register):
+Response 201 Created: User created with 549755813888 bytes quota (512 GB) and returned Access + Refresh tokens.
+User Login (POST /api/v1/auth/login):
+Response 200 OK: Authenticated user, issued tokens, recorded login activity.

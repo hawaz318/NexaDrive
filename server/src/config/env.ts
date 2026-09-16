@@ -22,4 +22,17 @@ export const config = {
     secretKey: process.env.CHAPA_SECRET_KEY || '',
     apiUrl: process.env.CHAPA_API_URL || 'https://api.chapa.co/v1',
   },
+  clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
+  oauth: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID || 'google-client-id-placeholder',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'google-client-secret-placeholder',
+      callbackUrl: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:5000/api/v1/auth/google/callback',
+    },
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID || 'github-client-id-placeholder',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || 'github-client-secret-placeholder',
+      callbackUrl: process.env.GITHUB_CALLBACK_URL || 'http://localhost:5000/api/v1/auth/github/callback',
+    },
+  },
 };
