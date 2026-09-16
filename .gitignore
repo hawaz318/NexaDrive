@@ -39,4 +39,4 @@ Thumbs.db
 !.vscode/settings.json
 
 # Document
-.doc.txt
+docs/*
